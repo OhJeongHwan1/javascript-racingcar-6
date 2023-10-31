@@ -6,16 +6,19 @@ class App {
     this.cars = [];
     this.number = 0;
   }
+
   async inputCars() {
     MissionUtils.Console.print("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
     const input = await MissionUtils.Console.readLineAsync("");
 
     const splitInputs = input.split(",");
     splitInputs.map((car) => {
-      if (car.length <= 5) this.cars.push(new Car(car, 0));
-      else throw new Error("[ERROR] 이름이 5자리 이상입니다.");
+      const carName = car.trim();
+      if (carName.length <= 5 && carName.length > 0) this.cars.push(new Car(carName, 0));
+      else throw new Error("[ERROR] 이름이 없을 수 없습니다.");
     });
   }
+
   async inputNumber() {
     MissionUtils.Console.print("시도할 횟수는 몇 회인가요?");
     const input = await MissionUtils.Console.readLineAsync("");
@@ -23,6 +26,7 @@ class App {
     if (/\d/.test(input) && input > 0) this.number = parseInt(input);
     else throw new Error("[ERROR] 숫자가 잘못된 형식입니다.");
   }
+
   racingGame() {
     MissionUtils.Console.print("실행 결과");
     for (let i = 0; i < this.number; i++) {
@@ -33,6 +37,7 @@ class App {
       MissionUtils.Console.print("");
     }
   }
+
   checkWinner() {
     const winners = [];
     let highScore = 0; //가장 높은 점수 저장
